@@ -1,0 +1,7 @@
+{
+    "name": "socket-owl-chat",
+    "version": "0.0.1",
+    "description": "Owl Chat. Encrypted chatting tool",
+    "type": "commonjs",
+    "dependencies": {}
+}
