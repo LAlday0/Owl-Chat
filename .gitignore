@@ -1,1 +1,3 @@
 /owlchat.db
+.idea/*
+node_modules
