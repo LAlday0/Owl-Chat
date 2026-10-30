@@ -11,64 +11,34 @@
       #input:focus { outline: none; }
       #form > button { background: rgb(255, 196, 44); border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: rgb(255, 255, 255); }
 
+      #setup { display: flex; gap: 0.5rem; padding: 0.5rem; background: #fafafa; border-bottom: 1px solid #ddd; flex-wrap: wrap; align-items: center; }
+      #setup input { padding: 0.4rem 0.6rem; border: 1px solid #ccc; border-radius: 3px; }
+      #setup button { background: rgb(255, 196, 44); border: none; padding: 0.45rem 0.9rem; border-radius: 3px; color: #fff; }
+      #status { font-size: 0.8rem; color: #666; }
+
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages > li { padding: 0.5rem 1rem; }
       #messages > li:nth-child(odd) { background: #efefef; }
+      #messages > li.system { color: #888; font-style: italic; }
+      #messages > li.locked { color: #b00; }
+      #messages .author { font-weight: 600; margin-right: 0.35rem; }
+      #messages .cipher { display: block; font-family: monospace; font-size: 0.7rem; color: #999; word-break: break-all; }
     </style>
   </head>
   <body>
+    <div id="setup">
+      <input id="username" autocomplete="off" placeholder="username" />
+      <input id="passphrase" type="password" autocomplete="off" placeholder="shared secret" />
+      <button id="join">Join</button>
+      <span id="status">Enter a username and the secret shared with your peer.</span>
+      <label><input id="show-cipher" type="checkbox" /> show ciphertext</label>
+    </div>
     <ul id="messages"></ul>
     <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
+      <input id="input" autocomplete="off" placeholder="message" /><button>Send</button>
     </form>
 <script src="/socket.io/socket.io.js"></script>
-<script>
-    let counter = 0;
-
-  const socket = io({
-    auth: {
-      serverOffset: 0
-    },
-    //enable retries
-    ackTimeout: 10000,
-    retries: 3,
-  });
-
-  const form = document.getElementById('form');
-  const input = document.getElementById('input');
-  const messages = document.getElementById('messages');
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (input.value) {
-        //compute unique offset
-        const clientOffset = `${socket.id}-${counter++}`;
-      socket.emit('chat message', input.value, clientOffset);
-      input.value = '';
-    }
-  });
-
-  socket.on('chat message', (msg, serverOffset) => {
-    const item = document.createElement('li');
-    item.textContent = msg;
-    messages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
-    socket.auth.serverOffset = serverOffset;
-  });
-
-  socket.on('user connected', () => {
-    const item = document.createElement('li');
-    item.textContent = 'A user connected';
-    messages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
-  });
-
-    socket.on('user disconnected', () => {
-    const item = document.createElement('li');
-    item.textContent = 'A user disconnected';
-    messages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
-  });
-</script>
+<script src="/aes.js"></script>
+<script src="/chat.js"></script>
   </body>
 </html>

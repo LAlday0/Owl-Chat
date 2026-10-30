@@ -3,5 +3,19 @@
     "version": "0.0.1",
     "description": "Owl Chat. Encrypted chatting tool",
     "type": "commonjs",
-    "dependencies": {}
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "test": "node --test test/",
+        "bench": "node bench/aes-benchmark.js"
+    },
+    "dependencies": {
+        "express": "^5.3.0",
+        "socket.io": "^4.8.4",
+        "sqlite": "^5.1.1",
+        "sqlite3": "^6.0.1"
+    },
+    "devDependencies": {
+        "socket.io-client": "^4.8.4"
+    }
 }
