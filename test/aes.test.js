@@ -19,7 +19,7 @@ function deriveAesKey(passphrase) {
   return new Uint8Array(crypto.createHash('sha256').update(passphrase, 'utf8').digest()).slice(0, 16);
 }
 
-test('the generated S-box matches FIPS 197', () => {
+test('the S-box matches FIPS 197', () => {
   assert.strictEqual(aes.SBOX[0x00], 0x63);
   assert.strictEqual(aes.SBOX[0x01], 0x7c);
   assert.strictEqual(aes.SBOX[0x53], 0xed);
